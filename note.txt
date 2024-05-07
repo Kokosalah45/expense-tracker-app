@@ -1,0 +1,20 @@
+
+- folder structure ✓
+    - icons ✓
+    - fonts 
+    - theming ✓
+    - constants ✓
+
+
+- fundmentals
+    - splash screen 
+    - i18n ✓
+    - permissions
+    - native apis 
+        - pixel ratio
+        - dimensions ✓
+        - I18nManager ✓
+- concepts
+    - navigation
+    - style patterns 
+    - responsive design
