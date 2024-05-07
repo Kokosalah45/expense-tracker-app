@@ -1,5 +1,5 @@
-
-- folder structure ✓
+- development 
+    - folder structure ✓
     - icons ✓
     - fonts 
     - theming ✓
@@ -14,7 +14,11 @@
         - pixel ratio
         - dimensions ✓
         - I18nManager ✓
+
 - concepts
     - navigation
     - style patterns 
     - responsive design
+    - linking 
+    - environment variables 
+    

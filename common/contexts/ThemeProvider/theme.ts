@@ -1,4 +1,4 @@
-import { palette, fonts, breakpoints, spacing } from "@/constants";
+import { palette, fonts, breakpoints, spacing } from "@/theme";
 
 type BaseTheme = {
   colors: Record<string, string>;
