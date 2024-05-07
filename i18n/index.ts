@@ -1,9 +1,8 @@
-import i18next, { Modules } from "i18next";
-
-import AsyncStorage from "@react-native-async-storage/async-storage";
-
 import { initReactI18next } from "react-i18next";
 import { getLocales } from "expo-localization";
+
+import i18next, { Modules } from "i18next";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const languageDetectorOptions: Modules["languageDetector"] = {
   type: "languageDetector",

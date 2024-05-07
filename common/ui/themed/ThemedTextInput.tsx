@@ -1,23 +1,23 @@
-import React from 'react'
+import { useTheme } from "@/common/contexts/ThemeProvider";
 
-import { TextInput } from 'react-native'
+import { TextInput } from "react-native";
 
-type Props = {}
+type Props = {};
 
 const ThemedTextInput = (props: Props) => {
-    const theme = useTheme()
+  const { currentTheme } = useTheme();
   return (
     <TextInput
       style={{
-        backgroundColor: theme.colors.background,
-        color: theme.colors.text,
-        padding: theme.spacing.sm,
-        borderRadius: theme.spacing.sm,
-        marginBottom: theme.spacing.sm,
-        marginStart: theme.spacing.sm,
-        marginEnd   : theme.spacing.sm,
+        backgroundColor: currentTheme.colors.background,
+        color: currentTheme.colors.text,
+        padding: currentTheme.spacing.sm,
+        borderRadius: currentTheme.spacing.sm,
+        marginBottom: currentTheme.spacing.sm,
+        marginStart: currentTheme.spacing.sm,
+        marginEnd: currentTheme.spacing.sm,
       }}
       {...props}
     />
-  )
-}
+  );
+};
