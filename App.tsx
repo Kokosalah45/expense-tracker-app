@@ -51,7 +51,7 @@ type LoadingState = {
 };
 
 type AuthState = UnAuthedState | AuthedState | LoadingState;
-
+type CholorScheme = "dark" | "light" | "system";
 const Root = () => {
   const [isOnboarded, setIsOnboarded] = useState<null | boolean>(null);
   const [authState, setAuthState] = useState<AuthState>({
@@ -59,68 +59,113 @@ const Root = () => {
     userData: null,
   });
 
-  const isReady = isOnboarded !== null && authState.state !== "loading";
+  const [userColorScheme, setUserColorScheme] = useState<CholorScheme | null>(
+    null
+  );
+
+  const isReady =
+    isOnboarded !== null &&
+    userColorScheme !== null &&
+    authState.state !== "loading";
 
   useEffect(() => {
     const prepare = async () => {
-      const isOnboarded = await AsyncStorage.getItem("is_onboarded");
-      if (isOnboarded === null) {
+      const defaultIsOnboarded = "false";
+      const defaultSavedCholorSchema: CholorScheme = "system";
+      const defaultAuthData: AuthState = {
+        state: "unauthenticated",
+        userData: null,
+      };
+
+      const savedIsOnboarded = await AsyncStorage.getItem("is_onboarded");
+
+      if (savedIsOnboarded === null) {
+        await Promise.all([
+          AsyncStorage.setItem("is_onboarded", defaultIsOnboarded),
+          AsyncStorage.setItem("auth_data", JSON.stringify(defaultAuthData)),
+          AsyncStorage.setItem("color_scheme", defaultSavedCholorSchema),
+        ]);
         setIsOnboarded(false);
-        setAuthState({ state: "unauthenticated", userData: null });
-      } else {
-        const authData = await AsyncStorage.getItem("auth_data");
+        setAuthState(defaultAuthData);
+        setUserColorScheme(defaultSavedCholorSchema);
+        return;
+      }
 
-        if (!authData) {
-          setAuthState({ state: "unauthenticated", userData: null });
-          setIsOnboarded(true);
-          return;
+      /*
+        {
+          accessToken: "string",
+          refreshToken "string"
         }
+      */
 
-        const serializedAuthData = JSON.parse(authData || "{}") as {
+      const savedAuthTokens = (await AsyncStorage.getItem("auth_tokens")) as
+        | string
+        | null;
+
+      const savedCholorSchema = (await AsyncStorage.getItem(
+        "color_scheme"
+      )) as CholorScheme | null;
+
+      let authState: AuthState | null = null;
+
+      let currentColorScheme: CholorScheme | null = null;
+
+      if (!savedCholorSchema) {
+        currentColorScheme = defaultSavedCholorSchema;
+      } else {
+        currentColorScheme = savedCholorSchema as CholorScheme;
+      }
+
+      if (!savedAuthTokens) {
+        authState = defaultAuthData;
+      } else {
+        const tokens = JSON.parse(savedAuthTokens) as {
           accessToken: string;
           refreshToken: string;
         };
 
-        const user = (await getUserInfo(
-          serializedAuthData.accessToken
-        )) as User | null;
+        // token is not
+        const user = (await getUserInfo(tokens.accessToken)) as User | null;
 
         if (!user) {
-          const newAuthData = await refreshToken(
-            serializedAuthData.refreshToken
-          );
+          const refreshedTokens = await refreshToken(tokens.refreshToken);
 
-          if (!newAuthData) {
-            setAuthState({
-              state: "unauthenticated",
-              userData: null,
-            });
-            setIsOnboarded(true);
-            return;
+          if (!refreshedTokens) {
+            authState = defaultAuthData;
+          } else {
+            const user = (await getUserInfo(
+              refreshedTokens.accessToken
+            )) as User;
+
+            authState = {
+              state: "authenticated",
+              userData: user,
+            };
           }
-
-          await AsyncStorage.setItem("auth_data", JSON.stringify(newAuthData));
-
-          const user = (await getUserInfo(
-            serializedAuthData.accessToken
-          )) as User;
-
-          setAuthState({
+        } else {
+          authState = {
             state: "authenticated",
             userData: user,
-          });
-
-          setIsOnboarded(true);
-          return;
+          };
         }
-
-        setAuthState({
-          state: "authenticated",
-          userData: user,
-        });
       }
+
+      await Promise.all([
+        AsyncStorage.setItem("is_onboarded", savedIsOnboarded),
+        AsyncStorage.setItem("auth_data", JSON.stringify(authState)),
+        AsyncStorage.setItem("color_scheme", currentColorScheme),
+      ]);
+
+      setIsOnboarded(savedIsOnboarded === "true");
+      setAuthState(authState);
+      setUserColorScheme(currentColorScheme);
     };
-    prepare();
+
+    try {
+      prepare();
+    } catch (error) {
+      console.log({ error });
+    }
   }, []);
 
   const onLayoutView = useCallback(async () => {

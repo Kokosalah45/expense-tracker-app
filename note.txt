@@ -1,24 +1,42 @@
-- development 
+- setup 
     - folder structure ✓
-    - icons ✓
-    - fonts 
+    - assets
+        - fonts ✓
+        - images 
+            - icons
+            - svgs
+            - animations
     - theming ✓
     - constants ✓
+    - environment variable 
+
+- bootstrapping app 
+    - splash screen 
+    - permissions
+    - i18n ✓
+    - checking preferences
+    - checking auth state
 
 
 - fundmentals
-    - splash screen 
-    - i18n ✓
-    - permissions
+    - builtin components
     - native apis 
         - pixel ratio
         - dimensions ✓
         - I18nManager ✓
 
 - concepts
+    - theming
     - navigation
-    - style patterns 
     - responsive design
+    - style patterns 
     - linking 
-    - environment variables 
+    - safe areas
+    - unit testing
+    - file uploading
+    - image uploading
     
+
+- current agenda
+    1. fonts
+    2. responsive design dpi , flex 
