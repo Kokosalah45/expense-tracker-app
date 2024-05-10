@@ -1,6 +1,5 @@
-import { createContext, useContext, useEffect, useState } from "react";
-import themes, { Theme, ThemeKeys } from "./theme";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import { createContext, useContext, useState } from "react";
+import defaultTheme, { Theme, ThemeKeys } from "./theme";
 
 type ContextProps = {
   currentTheme: Theme;
@@ -11,24 +10,20 @@ const themeContext = createContext<ContextProps>(null);
 
 type ThemeProviderProps = {
   children: React.ReactNode;
+  theme?: Record<string, Theme>;
 };
 
-const ThemeProvider = ({ children }: ThemeProviderProps) => {
-  const [theme, setTheme] = useState<ThemeKeys>("baseTheme");
-  const currentTheme = themes[theme];
+const ThemeProvider = ({
+  children,
+  theme = defaultTheme,
+}: ThemeProviderProps) => {
+  const [currenTheme, setTheme] = useState<ThemeKeys>("baseTheme");
+  const currentTheme = theme[currenTheme];
 
+  console.log({ currenTheme });
   const changeTheme = async (newTheme: ThemeKeys) => {
-    await AsyncStorage.setItem("theme", newTheme);
     setTheme(newTheme);
   };
-
-  useEffect(() => {
-    AsyncStorage.getItem("theme").then((storedTheme) => {
-      if (storedTheme) {
-        setTheme(storedTheme as ThemeKeys);
-      }
-    });
-  }, []);
 
   return (
     <themeContext.Provider

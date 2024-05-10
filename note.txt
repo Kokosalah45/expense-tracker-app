@@ -3,40 +3,37 @@
     - assets
         - fonts ✓
         - images 
-            - icons
-            - svgs
+            - icons ✓
+            - svgs ✓ 
             - animations
     - theming ✓
     - constants ✓
-    - environment variable 
+    - environment variables
 
 - bootstrapping app 
-    - splash screen 
+    - splash screen ✓
     - permissions
     - i18n ✓
-    - checking preferences
-    - checking auth state
+    - checking preferences ✓
+    - checking auth state ✓
 
 
 - fundmentals
-    - builtin components
+    - builtin components ✓
     - native apis 
-        - pixel ratio
+        - pixel ratio ✓
         - dimensions ✓
         - I18nManager ✓
 
 - concepts
-    - theming
-    - navigation
-    - responsive design
-    - style patterns 
+    - theming ✓
+    - navigation ✓ 
+    - responsive design ✓ (react-size-matters - dps - pixel ratio)
+    - style patterns ✓ (files co exist with the components)
     - linking 
-    - safe areas
+    - safe areas ✓ (react-native-safe-area-context)
     - unit testing
-    - file uploading
-    - image uploading
+    - file uploading ✓ (react-native-document-picker - expo-fs - rn-fs - rn-fetch-blob)
+    - image uploading ✓ (image picker)
+    - foreground vs background
     
-
-- current agenda
-    1. fonts
-    2. responsive design dpi , flex 

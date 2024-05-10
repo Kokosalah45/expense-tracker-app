@@ -1,4 +1,4 @@
-import { palette, fonts, breakpoints, spacing } from "@/theme";
+import { palette, fonts, breakpoints, spacing } from "@/constants";
 
 type BaseTheme = {
   colors: Record<string, string>;
@@ -33,12 +33,13 @@ const darkTheme: Theme = {
   },
 };
 
-const themes = {
+const theme: Record<string, Theme> = {
   baseTheme,
   darkTheme,
-} as const;
+};
 
-type ThemeKeys = keyof typeof themes;
+type ThemeKeys = keyof typeof theme;
+``;
 
-export default themes;
+export default theme;
 export { ThemeKeys, Theme };
